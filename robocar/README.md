@@ -300,3 +300,60 @@ GPIO0 is the camera BOOT button. Its I2C reply at `0x79` contains a short-press 
 - `program_enabled` in the sensor payload reports the run state. The Python wrapper checks it before `drive()` and `servo()`, and after a timed `drive()`.
 
 The button is a software input, not a hard power cutoff. Blocking firmware routines can delay its handling. Keep physical motor-power disconnection available.
+
+## Edge Impulse: train a detector
+
+Use this section to build and export the `.eim` model used in the below step 5. You can clone [our project with prelabelled capture data](https://studio.edgeimpulse.com/public/1144501/live) or start from scratch with your own captures.
+
+### 1. Collect data
+
+Go to **Data acquisition** in the left sidebar and click **+ Add data → Collect new data**. Select **Scan QR code to connect to your phone** and follow the on-screen directions to capture images from your phone's camera.
+
+For the robocar challenge you need at least two classes: `soccerball` and `goal`. Capture each from different angles, distances, and lighting conditions. Include empty scenes and background-only frames to reduce false positives.
+
+### 2. Create impulse
+
+Navigate to **Create impulse**. Use these settings:
+
+**Image data**
+
+| Setting | Value |
+|---|---|
+| Image width | 96 |
+| Image height | 96 |
+| Resize mode | Squash |
+| Train on data subset | 100% |
+
+**Processing block** — add **Image** (required; training will error without it).
+
+**Learning block** — add **Object Detection (Images)**. Select FOMO MobileNetV2 0.35 (Optimized data augmentation) and confirm the output features match your label count: `soccerball` and `goal`.
+
+Click **Save impulse**.
+
+### 3. Generate features
+
+Navigate to **Image** under **Impulse design**. Set color depth to **RGB**, click **Save parameters**, then **Generate features**. Review the feature explorer to confirm class separation before training.
+
+### 4. Train the model
+
+Navigate to **Object detection** under **Impulse design**.
+
+| Setting | Value |
+|---|---|
+| Number of training cycles | 150–180 |
+| Learning rate | 0.001 |
+| Training processor | CPU |
+| Data augmentation | Enabled |
+
+Click **Save & train**. Review the F1 score and confusion matrix in the Training output panel. On-device performance on the Arduino UNO Q runs around 8 ms latency, 133 kB RAM, and 81 kB flash.
+
+### 5. Export and place the model
+
+Navigate to **Deployment**, set the deployment target to **Arduino UNO Q**, and click **Build**. Download the `.eim` file and place it in your project:
+
+```
+python/
+  your-model-linux-aarch64.eim
+```
+
+The `.eim` file is generated from your own project and is not included by default. 
