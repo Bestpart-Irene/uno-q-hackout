@@ -1,17 +1,19 @@
 # Robocar: detect the ball and act on it
 
-[All tracks](../README.md) · [Terminal commands](#terminal-commands) · [Driver API](#python-driver-api) · [Hardware reference](#hardware-and-camera-reference)
+[All tracks](../README.md) · [Pre-work](PREWORK.md) · [Arduino references](PREWORK.md#arduino-references) · [Terminal commands](#terminal-commands) · [Driver API](#python-driver-api) · [Hardware reference](#hardware-and-camera-reference)
 
 Use an Arduino UNO Q on a Hiwonder miniAuto chassis to find a ball, approach it, and push it toward a goal.
 
 The robot arrives **preassembled**, including its ESP32-S3 camera. This guide starts with a short, button-started movement, then adds camera input and ball-driven behavior. The starter supplies motor control and camera firmware; you write the detector and decision logic.
+
+Before connecting your kit, complete the [pre-work](PREWORK.md) (about 30 minutes).
 
 ## 1. Connect to the robot
 
 You need a computer with [Arduino App Lab](https://docs.arduino.cc/software/app-lab/), a data-capable USB-C cable, and the robot's camera network details.
 
 1. Raise the wheels and locate the motor-power disconnect. Keep wheels and cables clear.
-2. Connect the UNO Q by USB and follow the [App Lab quickstart](https://docs.arduino.cc/software/app-lab/getting-started/quickstart). Keep the prepared board software and wiring in place.
+2. Connect the UNO Q by USB and follow the [App Lab board connection guide](https://docs.arduino.cc/software/app-lab/configure/config/). Keep the prepared board software and wiring in place.
 3. Get the camera SSID/password and motor calibration supplied with the robot. Locate the camera's **BOOT button**, which starts and stops the program.
 
 The button is a software stop. Keep the physical motor-power disconnect accessible while developing movement.
@@ -317,12 +319,12 @@ Navigate to **Create impulse**. Use these settings:
 
 **Image data**
 
-| Setting | Value |
-|---|---|
-| Image width | 96 |
-| Image height | 96 |
-| Resize mode | Squash |
-| Train on data subset | 100% |
+| Setting              | Value  |
+| -------------------- | ------ |
+| Image width          | 96     |
+| Image height         | 96     |
+| Resize mode          | Squash |
+| Train on data subset | 100%   |
 
 **Processing block** — add **Image** (required; training will error without it).
 
@@ -338,12 +340,12 @@ Navigate to **Image** under **Impulse design**. Set color depth to **RGB**, clic
 
 Navigate to **Object detection** under **Impulse design**.
 
-| Setting | Value |
-|---|---|
+| Setting                   | Value   |
+| ------------------------- | ------- |
 | Number of training cycles | 150–180 |
-| Learning rate | 0.001 |
-| Training processor | CPU |
-| Data augmentation | Enabled |
+| Learning rate             | 0.001   |
+| Training processor        | CPU     |
+| Data augmentation         | Enabled |
 
 Click **Save & train**. Review the F1 score and confusion matrix in the Training output panel. On-device performance on the Arduino UNO Q runs around 8 ms latency, 133 kB RAM, and 81 kB flash.
 
@@ -357,3 +359,4 @@ python/
 ```
 
 The `.eim` file is generated from your own project and is not included by default. 
+
