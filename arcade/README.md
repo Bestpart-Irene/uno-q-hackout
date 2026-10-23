@@ -1,16 +1,18 @@
 # Arcade: build a game for the UNO Q console
 
-[All tracks](../README.md) · [Terminal commands](#terminal-commands) · [Hardware reference](#hardware-reference)
+[All tracks](../README.md) · [Pre-work](PREWORK.md) · [Arduino references](PREWORK.md#arduino-references) · [Terminal commands](#terminal-commands) · [Hardware reference](#hardware-reference)
 
 Build a game with a clear objective, physical controls, an ending, and a restart. The console arrives **preassembled** with an Arduino UNO Q, Modulino Joystick, Buttons and Movement, a printed body, and the DIYables 3.5-inch TFT.
 
 Start with the included control preview, then choose **App Lab** for direct drawing or **RetroArch** for a software-rendered libretro game. Both use the supplied screen.
 
+Before connecting your kit, complete the [pre-work](PREWORK.md) (about 30 minutes).
+
 ## 1. Connect to the console
 
 You need [Arduino App Lab](https://docs.arduino.cc/software/app-lab/), a data-capable USB-C cable, and the console's supplied power arrangement.
 
-1. Connect the UNO Q to your computer and follow the [App Lab quickstart](https://docs.arduino.cc/software/app-lab/getting-started/quickstart).
+1. Connect the UNO Q to your computer and follow the [App Lab board connection guide](https://docs.arduino.cc/software/app-lab/configure/config/).
 2. Keep the prepared board software and assembled wiring in place. Make sure the joystick and buttons move freely.
 3. Get the display-controller setting and prepared app ZIP supplied with your console.
 
