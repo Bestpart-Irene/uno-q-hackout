@@ -80,6 +80,18 @@ If the ball rolls the wrong way for how the Movement module is mounted, change t
 - Button presses are edge-detected, the result screen ignores presses for its first second, and physics is sub-stepped so the ball cannot tunnel through a wall during a Bridge hiccup.
 - If Python stops sending frames for 1.5 s the MCU falls back to the starter's waiting screen and turns the LEDs off.
 
+## Verified on the console
+
+Tested on a prepared Build Day console (Debian 13 image, App CLI 0.13.0, Zephyr core 1.0.0, HX8357D panel): start screen, live tilt-test marker, button LEDs, stick start, Bridge frame loop all run from `make flash`.
+
+## Troubleshooting
+
+| Symptom | Cause we hit | Fix |
+| --- | --- | --- |
+| Python logs `method arcade_read_inputs not available`, no serial output, TFT white | Sketch built with Zephyr core 0.55.2 on a board whose runtime is 1.0.0: the upload succeeds but the sketch never runs | `sketch.yaml` pins `arduino:zephyr (1.0.0)` (the version the board's bundled examples use) |
+| Bridge works and button LEDs light, but the TFT stays pure white with either controller setting | TFT shield not fully seated on the headers (control lines read about 1.9 V instead of 3.3 V, controller ID reads as zeros) | Power off, press the shield firmly onto the UNO headers, power on. After reseating, register `0xBF` reads `00 01 62 83 57 FF`, which identifies the HX8357D |
+| First `make flash` takes 15+ minutes | Core, toolchain and three libraries download and compile on the board | Needs Internet once (a phone hotspot via `nmcli dev wifi connect` works); later flashes take about a minute |
+
 ## Hardware
 
 Preassembled UNO Q arcade console: Arduino UNO Q, Modulino Buttons (`0x3E`), Modulino Joystick (`0x2C`), Modulino Movement (`0x6A`) over Qwiic, DIYables 3.5" 480×320 TFT shield (HX8357D). See [README.md](README.md) for wiring, pins, and the RetroArch option.
