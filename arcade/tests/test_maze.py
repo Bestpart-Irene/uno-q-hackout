@@ -15,10 +15,15 @@ FLAT = {"ax": 50, "ay": -75, "az": 1034}
 
 
 def inputs(buttons=0, connected=ALL, tx=0, ty=0, x=0, y=0):
-    """Snapshot with a tilt of (tx, ty) mg relative to FLAT."""
+    """Snapshot with a game-direction tilt of (tx, ty) mg relative to FLAT.
+
+    Positive tx rolls the ball right, positive ty rolls it down the screen,
+    whatever the mounting inversion constants are set to."""
+    raw = [FLAT["ax"], FLAT["ay"], FLAT["az"]]
+    raw[maze.TILT_AXIS_X] += -tx if maze.INVERT_TILT_X else tx
+    raw[maze.TILT_AXIS_Y] += -ty if maze.INVERT_TILT_Y else ty
     return {"connected": connected, "buttons": buttons, "x": x, "y": y,
-            "ax": FLAT["ax"] + tx, "ay": FLAT["ay"] + ty, "az": FLAT["az"],
-            "video": 0}
+            "ax": raw[0], "ay": raw[1], "az": raw[2], "video": 0}
 
 
 TINY = {"time": 10, "grid": [
@@ -99,6 +104,8 @@ class GameTests(unittest.TestCase):
         self.assertEqual(self.g.tilt, (0.0, 0.0))
 
     def test_ready_marker_encodes_tilt(self):
+        self.tick(inputs(0))
+        self.tick(inputs(B))          # zero at the flat position first
         self.tick(inputs(0, tx=1000, ty=-1000))
         frame = self.g.frame(ALL)
         extra = frame[-1]

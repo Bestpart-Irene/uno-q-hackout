@@ -62,7 +62,7 @@ python3 -m unittest discover -s tests -v
 
 No numbers to edit for the basic setup: **the tilt zero is captured when you press the stick to start**, so whatever angle the console is held at that moment becomes "flat". Press **B** on the start screen to re-zero at any time and watch the tilt-test dot turn green.
 
-If the ball rolls the wrong way for how the Movement module is mounted, change the constants at the top of `python/maze.py`:
+The Movement module in the Build Day console is mounted upright: gravity sits on `ay`, left/right tilt moves `ax`, front/back tilt moves `az`. The shipped constants (`TILT_AXIS_X = 0`, `TILT_AXIS_Y = 2`, `INVERT_TILT_X = True`, `INVERT_TILT_Y = False`) were set by reading the raw values on the console. If the ball rolls the wrong way on a differently mounted module, change the constants at the top of `python/maze.py`:
 
 | Constant | Meaning |
 | --- | --- |

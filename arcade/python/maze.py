@@ -25,14 +25,14 @@ HOLE_R = 9
 
 # ---- Tuning: change these on the console until rolling feels right ----
 TILT_AXIS_X = 0            # index into (ax, ay, az) that moves the ball left/right
-TILT_AXIS_Y = 1            # index that moves the ball up/down the screen
-INVERT_TILT_X = False
+TILT_AXIS_Y = 2            # index that moves the ball up/down the screen (az: module is mounted upright, gravity on ay)
+INVERT_TILT_X = True
 INVERT_TILT_Y = False
 TILT_DEAD_ZONE_MG = 25     # ignore tiny tilt
 TILT_MAX_MG = 350          # this much tilt gives full acceleration
-ACCEL_PX = 1100.0          # px/s^2 at full tilt
-MAX_SPEED = 260.0          # px/s
-DAMPING = 1.2              # per second, velocity *= exp(-DAMPING * dt)
+ACCEL_PX = 1000.0          # px/s^2 at full tilt
+MAX_SPEED = 200.0          # px/s
+DAMPING = 2.5              # per second, velocity *= exp(-DAMPING * dt); higher = less floaty
 JOYSTICK_DEAD_ZONE = 26
 INVERT_STICK_X = False
 INVERT_STICK_Y = True
