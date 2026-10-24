@@ -91,7 +91,10 @@ Temporarily insert this code before `App.run(...)` in `python/main.py`. Its exis
 ```python
 samples = []
 for _ in range(100):
-    sample = json.loads(Bridge.call("arcade_read_inputs"))
+    response = Bridge.call("arcade_read_inputs")
+    if not isinstance(response, (str, bytes, bytearray)):
+        raise TypeError("Expected JSON text from arcade_read_inputs")
+    sample = json.loads(response)
     assert sample["connected"] & 4, "Connect Movement and restart the app"
     samples.append([sample[key] for key in ("ax", "ay", "az")])
     time.sleep(0.05)
@@ -111,12 +114,17 @@ Raw `arcade_read_inputs` acceleration still includes gravity. Keep the calibrate
 The included [`python/main.py`](python/main.py) reads the controls, applies calibration, and asks the sketch to draw the preview. Its core calls are:
 
 ```python
-inputs = json.loads(Bridge.call("arcade_read_inputs"))
+response = Bridge.call("arcade_read_inputs")
+if not isinstance(response, (str, bytes, bytearray)):
+    raise TypeError("Expected JSON text from arcade_read_inputs")
+inputs = json.loads(response)
 frame = frame_values(inputs)
 Bridge.call("arcade_draw_frame", *frame)
 ```
 
 These lines belong inside the starter's existing `loop()`, which supplies the imports, error handling, and RetroArch display-ownership check. Keep that structure as you add game rules.
+
+`Bridge.call()` can return different RPC value types. The type check confirms the response is JSON text or bytes before parsing it, and lets App Lab's editor verify the `json.loads()` call.
 
 ```mermaid
 flowchart LR
@@ -214,6 +222,7 @@ After editing local files, run `make flash` again. It replaces those source path
 | `make package` | Rebuild [`zip/uno-q-arcade.zip`](zip/uno-q-arcade.zip) for App Lab import |
 | `make build` | Compile only the MCU sketch locally with [Arduino CLI](https://arduino.github.io/arduino-cli/) |
 | `make clean` | Remove this track's local ZIP and sketch build |
+| `python3 -m unittest discover -s tests -v` | Check preview responses and tile caching locally without a board |
 
 Use **Ctrl+C** to leave the monitor or logs; the app keeps running. Use `make stop` when finished. For Python game logic, keep `make logs` open in a second terminal.
 

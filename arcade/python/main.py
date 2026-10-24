@@ -7,7 +7,10 @@ from preview import frame_values
 
 def loop():
     try:
-        inputs = json.loads(Bridge.call("arcade_read_inputs"))
+        response = Bridge.call("arcade_read_inputs")
+        if not isinstance(response, (str, bytes, bytearray)):
+            raise TypeError("Expected JSON text from arcade_read_inputs")
+        inputs = json.loads(response)
         if inputs.get("video", 0):
             time.sleep(0.5)
             return

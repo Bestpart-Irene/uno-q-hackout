@@ -29,7 +29,7 @@ def encode_tile(raw):
 
 class Tiles:
     def __init__(self):
-        self.sent = [None] * TILE_COUNT
+        self.sent: list[bytes | None] = [None] * TILE_COUNT
         self.cursor = 0
 
     def next_changed(self, frame):

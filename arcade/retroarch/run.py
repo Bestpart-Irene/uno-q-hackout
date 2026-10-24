@@ -102,6 +102,7 @@ def run(core=None, content=None):
                 raise RuntimeError("TFT stream expired; restart the launcher")
             keyboard.update(keys_for(inputs))
             if changed:
+                index, raw, _ = changed
                 tiles.sent[index] = raw  # Cache only acknowledged pixels.
                 sent += 1
             rpc_time += time.monotonic() - start
