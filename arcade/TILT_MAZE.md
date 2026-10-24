@@ -4,6 +4,20 @@ A tilt-controlled maze game for the Arduino UNO Q arcade console, built at Build
 
 Hold the console flat, press the stick, then **tilt the whole console** to roll an orange ball through three mazes to the green **E** exit. Grey rings are holes: roll over one and you lose a life and restart the maze. Each maze has a clock. Three lives for the whole run, three mazes, score is 100 per maze plus every second left on the clock.
 
+## Screens
+
+Simulated run driven by the real `maze.py` rules (a path-following bot with a shaky hand), rendered from the sketch's layout. The real TFT uses the 6×8 pixel font, so text looks blockier on the console.
+
+![Gameplay](docs/gameplay.gif)
+
+| Start screen with live tilt test | Maze 1: open, no holes | Maze 2: holes in dead ends |
+| --- | --- | --- |
+| ![Start](docs/ready.png) | ![Maze 1](docs/playing_maze1.png) | ![Maze 2](docs/playing_maze2.png) |
+
+| Maze 3: full maze, five holes | Maze clear banner | Run complete |
+| --- | --- | --- |
+| ![Maze 3](docs/playing_maze3.png) | ![Clear](docs/clear.png) | ![Result](docs/result.png) |
+
 ## Controls
 
 | Control | Action |
